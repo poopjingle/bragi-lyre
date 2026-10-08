@@ -11,21 +11,15 @@ This folder is the installable version of your practice app. It has everything t
 | sw.js | Lets the app open without internet |
 | icon-*.png | App icons |
 
-## Put it online (one time, about 10 minutes)
+## Live address
 
-Android installs web apps from a web address, and the microphone needs a secure (https) address. GitHub Pages hosts this for free.
+**https://poopjingle.github.io/bragi-lyre/**
 
-1. Sign in at github.com, or create a free account.
-2. Click **New repository**. Name it `bragi-lyre`, choose **Public**, and click **Create repository**.
-3. On the next page, click **uploading an existing file**. Drag in every file from this folder (the files, not the folder itself). Click **Commit changes**.
-4. Open the repository's **Settings**, then **Pages**. Under **Build and deployment**, set Source to **Deploy from a branch**, Branch to **main** and **/(root)**, and click **Save**.
-5. Wait a minute or two. Your app's address will be `https://YOUR-USERNAME.github.io/bragi-lyre/`.
-
-Note: a public repository means anyone with the address could open the practice plan. Your progress never leaves your phone.
+The site is published by GitHub Pages from the `gh-pages` branch. To update the app later, change the files on `gh-pages` (and on `main`, to keep them matching).
 
 ## Install it on your Android phone
 
-1. Open the address in **Chrome**.
+1. Open **https://poopjingle.github.io/bragi-lyre/** in **Chrome**.
 2. Tap the **⋮** menu, then **Add to home screen** (it may say **Install app**). Confirm.
 3. Open the app from your home screen. The first time you tap **Start tuner**, allow microphone access.
 
@@ -42,4 +36,4 @@ The Claude link saves progress to your Claude account; this app saves it on your
 
 ## Updating the app
 
-If you replace any file in the repository later, the app picks up the change the next time you open it with internet.
+When the files on `gh-pages` change, the app picks up the new version the next time you open it with internet.
