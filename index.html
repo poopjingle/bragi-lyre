@@ -1,0 +1,1064 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#EDEFE9">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101720">
+<meta name="description" content="Daily lyre practice for offerings to Bragi.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px)}</style>
+</head>
+<body>
+<title>Lyre Offerings to Bragi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;1,400;1,500&family=Alegreya+Sans:wght@400;500;700&display=swap">
+<style>
+/* Layout: a practice-room companion. One session per screen, the lyre's own 16 strings as the signature figure, a phone-style tab bar at the bottom. */
+:root{
+  --bg:#EDEFE9; --surface:#F9FAF6; --sunk:#E2E6DD; --ink:#1B2430; --muted:#56626A; --line:#CBD1C6;
+  --brass:#946410; --brass-hi:#C08A26; --brass-soft:#F0E2C2; --on-brass:#FBF8EF;
+  --fjord:#2B5870; --ok:#2B7549; --off:#AE5128;
+  --f-display:"Alegreya","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --f-ui:"Alegreya Sans","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --nav-h:62px; --radius:12px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101720; --surface:#17202C; --sunk:#0C1218; --ink:#E8E3D5; --muted:#9BA5AF; --line:#2A3544;
+    --brass:#DFAD4B; --brass-hi:#F1C66C; --brass-soft:#352B18; --on-brass:#16110A;
+    --fjord:#8DBAD4; --ok:#5EC68D; --off:#EE9061; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101720; --surface:#17202C; --sunk:#0C1218; --ink:#E8E3D5; --muted:#9BA5AF; --line:#2A3544;
+  --brass:#DFAD4B; --brass-hi:#F1C66C; --brass-soft:#352B18; --on-brass:#16110A;
+  --fjord:#8DBAD4; --ok:#5EC68D; --off:#EE9061; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:17px;line-height:1.5;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+button{font:inherit;color:inherit}
+a{color:var(--fjord)}
+:focus-visible{outline:2px solid var(--fjord);outline-offset:2px;border-radius:6px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .in{max-width:720px;margin:0 auto;padding:10px 16px 10px;display:grid;gap:8px}
+.top .row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--f-display);font-weight:700;font-size:19px;min-width:0}
+.brand svg{flex:none;color:var(--brass)}
+.brand span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.count{font-size:14px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bar{display:grid;grid-template-columns:repeat(12,1fr);gap:3px}
+.bar i{display:block;height:5px;border-radius:3px;background:var(--sunk);overflow:hidden;position:relative}
+.bar i b{position:absolute;inset:0 auto 0 0;background:var(--brass-hi);border-radius:3px}
+.bar i.ph{margin-left:4px}
+
+/* layout */
+.wrap{max-width:720px;margin:0 auto;padding-inline:16px;padding-block:18px calc(var(--nav-h) + 32px + env(safe-area-inset-bottom,0px))}
+.view{display:grid;gap:22px}
+
+/* bottom tabs */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs .in{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.tabs button{appearance:none;background:none;border:0;color:var(--muted);font:500 12.5px/1 var(--f-ui);letter-spacing:.03em;min-height:var(--nav-h);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer}
+.tabs button[aria-current="page"]{color:var(--brass)}
+.tabs button[aria-current="page"] svg{stroke-width:2}
+
+/* session */
+.weekstrip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.dchip{appearance:none;border:1px solid var(--line);background:var(--surface);border-radius:10px;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;padding:4px 0}
+.dchip .n{font:700 17px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.dchip .w{font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;line-height:1}
+.dchip.done{background:var(--brass-soft);border-color:transparent}
+.dchip.done .n{color:var(--brass)}
+.dchip.here{border:2px solid var(--ink)}
+.dchip.next .w{color:var(--brass)}
+.eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;letter-spacing:.06em;padding:3px 8px;border-radius:999px;background:var(--brass-soft);color:var(--brass)}
+.badge.ok{background:transparent;border:1px solid var(--brass)}
+.head{display:grid;gap:8px}
+.dtitle{font-size:clamp(30px,8vw,40px);font-weight:700}
+.goal{margin:0;color:var(--muted);max-width:62ch}
+.goal b{color:var(--ink);font-weight:500}
+.blocks{display:grid}
+.blk{border-top:1px solid var(--line);padding-block:14px;display:grid;gap:6px}
+.blk:last-child{border-bottom:1px solid var(--line)}
+.lab{display:flex;justify-content:space-between;gap:10px;align-items:baseline;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--brass)}
+.lab .t{color:var(--muted);font-weight:500;letter-spacing:.04em;text-transform:none;font-size:13.5px;font-variant-numeric:tabular-nums}
+.blk p{margin:0}
+.tune-row{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;justify-content:space-between}
+.ghost{appearance:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;font-weight:500;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.ghost svg{color:var(--brass)}
+ol.steps{margin:2px 0 0;padding:0;list-style:none;counter-reset:s;display:grid;gap:10px}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;max-width:64ch}
+ol.steps li::before{content:counter(s);font:700 19px/1.35 var(--f-display);color:var(--brass);font-variant-numeric:tabular-nums}
+h2.sec{font-size:22px}
+.links{display:grid;gap:10px}
+.links h3{font:700 12.5px/1 var(--f-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.lk{display:grid;grid-template-columns:64px minmax(0,1fr) 18px;gap:12px;align-items:center;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);text-decoration:none;color:inherit;min-height:60px}
+.lk:hover{border-color:var(--fjord)}
+.kind{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--fjord);border:1px solid currentColor;border-radius:5px;padding:4px 0;text-align:center}
+.lk .tt{font-weight:500;line-height:1.3;overflow-wrap:anywhere}
+.lk .src{font-size:14px;color:var(--muted)}
+.lk svg{color:var(--muted)}
+.poem{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:grid;gap:12px}
+.poem header{display:grid;gap:2px}
+.poem header h3{font-size:22px}
+.poem header p{margin:0;font-size:14px;color:var(--muted)}
+.pl{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:2px 10px;align-items:start;padding-top:10px;border-top:1px solid var(--line)}
+.pl .ln{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;padding-top:4px}
+.pl .on{font:italic 500 20px/1.3 var(--f-display)}
+.pl .en{grid-column:2;font-size:15px;color:var(--muted)}
+.pl .ch{grid-row:1 / span 2;grid-column:3;text-align:right;font-size:13.5px;font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap;padding-top:4px}
+.pl .ch small{display:block;color:var(--muted);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase}
+.dr{grid-column:2 / span 2;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--brass);margin-top:4px}
+.dr::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--brass-hi)}
+.poem .legend{font-size:14px;color:var(--muted);margin:0}
+figure.str{margin:0;display:grid;gap:8px}
+figure.str svg{width:100%;height:auto;display:block;max-width:100%}
+figure.str figcaption{font-size:15px;color:var(--muted)}
+.key{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted)}
+.key span{display:inline-flex;align-items:center;gap:6px}
+.key i{display:inline-block;width:18px;height:3px;border-radius:2px}
+svg text{font-family:var(--f-ui)}
+.offer{background:var(--brass-soft);border-radius:16px;padding:18px;display:grid;gap:6px}
+.offer .lab{color:var(--brass)}
+.offer p{margin:0}
+.offer .what{font:italic 500 21px/1.35 var(--f-display)}
+.offer .sub{font-size:15px;color:var(--muted)}
+.actions{display:grid;gap:10px}
+.primary{appearance:none;border:0;border-radius:14px;background:var(--brass);color:var(--on-brass);font-weight:700;font-size:17px;min-height:54px;padding:0 18px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.donebar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border:1px solid var(--brass);border-radius:14px}
+.donebar strong{color:var(--brass)}
+.textbtn{appearance:none;background:none;border:0;color:var(--fjord);font-weight:500;cursor:pointer;padding:6px 4px;text-decoration:underline;text-underline-offset:3px}
+.saved{font-size:13.5px;color:var(--muted);text-align:center;margin:0}
+.pager{display:flex;justify-content:space-between;gap:10px}
+.pager button{appearance:none;background:none;border:0;color:var(--muted);cursor:pointer;padding:8px 2px;font-size:15px;display:inline-flex;align-items:center;gap:6px}
+.pager button:disabled{opacity:.35;cursor:default}
+
+/* plan */
+.phase{display:grid;gap:12px}
+.phase>header{display:grid;gap:4px}
+.phase>header .pn{font-size:12.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--brass)}
+.phase>header h2{font-size:24px}
+.phase>header p{margin:0;color:var(--muted);font-size:15.5px}
+.wk{display:grid;gap:7px;padding:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+.wk .wt{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.wk .wt b{font-weight:500}
+.wk .wt span{font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cells{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.cell{appearance:none;border:1px solid var(--line);background:var(--bg);border-radius:8px;height:34px;cursor:pointer;font-size:13px;font-variant-numeric:tabular-nums;color:var(--muted);position:relative}
+.cell.done{background:var(--brass-hi);border-color:transparent;color:var(--on-brass);font-weight:700}
+.cell.next{border:2px solid var(--ink);color:var(--ink);font-weight:700}
+.cell.o::after{content:"";position:absolute;top:4px;right:4px;width:5px;height:5px;transform:rotate(45deg);background:currentColor;opacity:.7}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:grid;gap:10px}
+.note h2{font-size:20px}
+.note p{margin:0;font-size:15.5px;color:var(--muted)}
+.bk{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.bk code{font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;font-size:13px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 8px;overflow-wrap:anywhere;min-width:0;flex:1 1 220px;user-select:all}
+.bk input{flex:1 1 220px;min-width:0;font:inherit;font-size:15px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.msg{font-size:14px;color:var(--muted);margin:0;min-height:1.2em}
+
+/* lyre reference */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:15.5px}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+td.num{font-variant-numeric:tabular-nums;width:3.5em}
+td.nt{font-family:var(--f-display);font-weight:700;width:4em}
+tr.hl td.nt{color:var(--brass)}
+
+/* tuner */
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--sunk);border-radius:999px;padding:4px;gap:4px}
+.seg button{appearance:none;border:0;background:none;border-radius:999px;min-height:40px;font-weight:500;cursor:pointer;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.readout{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px 16px;display:grid;gap:6px;justify-items:center;text-align:center}
+.readout .big{font:700 56px/1 var(--f-display);font-variant-numeric:tabular-nums;min-height:56px}
+.readout .sub{font-size:15px;color:var(--muted);font-variant-numeric:tabular-nums;min-height:1.5em}
+.readout .st{font-weight:700;font-size:17px;min-height:1.5em}
+.st.ok{color:var(--ok)} .st.off{color:var(--off)}
+.gauge{width:100%;max-width:340px;height:auto;display:block}
+.needle{transition:transform .12s linear;transform-origin:170px 150px}
+.sgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.sbtn{appearance:none;border:1px solid var(--line);background:var(--surface);border-radius:12px;min-height:58px;cursor:pointer;display:grid;place-items:center;align-content:center;gap:1px;position:relative;padding:4px}
+.sbtn .sn{font-size:11.5px;color:var(--muted);letter-spacing:.05em;font-variant-numeric:tabular-nums}
+.sbtn .nn{font:700 20px/1 var(--f-display)}
+.sbtn.sel{border:2px solid var(--brass)}
+.sbtn.playing{background:var(--brass);color:var(--on-brass);border-color:transparent}
+.sbtn.playing .sn{color:var(--on-brass)}
+.sbtn.tuned::after{content:"";position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.tool-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.switch{appearance:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px 7px 8px;display:inline-flex;align-items:center;gap:9px;cursor:pointer;font-weight:500;font-size:15px}
+.switch i{width:34px;height:20px;border-radius:999px;background:var(--sunk);position:relative;transition:background .15s}
+.switch i::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--muted);transition:transform .15s,background .15s}
+.switch[aria-pressed="true"] i{background:var(--brass-soft)}
+.switch[aria-pressed="true"] i::after{transform:translateX(14px);background:var(--brass)}
+.howto{margin:0;padding-left:20px;display:grid;gap:6px;font-size:15.5px;color:var(--muted)}
+.howto b{color:var(--ink);font-weight:500}
+.err{color:var(--off);font-size:15px;margin:0}
+@media (prefers-reduced-motion: reduce){.needle,.switch i,.switch i::after{transition:none}}
+@media (min-width:640px){.links .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}}
+.grid2{display:grid;gap:10px}
+</style>
+
+<header class="top">
+  <div class="in">
+    <div class="row">
+      <div class="brand">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M6 3.5c-2.2 3-2.2 8.5 1 12.5 1.4 1.8 3 2.8 5 2.8s3.6-1 5-2.8c3.2-4 3.2-9.5 1-12.5"/><path d="M5 6.2h14"/><path d="M9.6 6.2v11.4M12 6.2v12.6M14.4 6.2v11.4"/></svg>
+        <span>Lyre Offerings to Bragi</span>
+      </div>
+      <div class="count" id="count">0 of 84 done</div>
+    </div>
+    <div class="bar" id="bar" aria-hidden="true"></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="view" id="v-session" aria-label="Session"></section>
+  <section class="view" id="v-tuner" aria-label="Tuner" hidden></section>
+  <section class="view" id="v-plan" aria-label="Plan" hidden></section>
+  <section class="view" id="v-lyre" aria-label="Lyre" hidden></section>
+</main>
+
+<nav class="tabs" aria-label="Sections">
+  <div class="in">
+    <button type="button" id="t-session" data-tab="session">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M3 5.5c3-1 6-1 9 1 3-2 6-2 9-1v13c-3-1-6-1-9 1-3-2-6-2-9-1z"/><path d="M12 6.5v13"/></svg>Session</button>
+    <button type="button" id="t-tuner" data-tab="tuner">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M8.5 2.5v8a3.5 3.5 0 0 0 7 0v-8"/><path d="M12 14v7.5"/></svg>Tuner</button>
+    <button type="button" id="t-plan" data-tab="plan">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M3.5 14.8h17M9.2 4v16M14.8 4v16"/></svg>Plan</button>
+    <button type="button" id="t-lyre" data-tab="lyre">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 3.5c-2.2 3-2.2 8.5 1 12.5 1.4 1.8 3 2.8 5 2.8s3.6-1 5-2.8c3.2-4 3.2-9.5 1-12.5"/><path d="M5 6.2h14"/><path d="M9.6 6.2v11.4M12 6.2v12.6M14.4 6.2v11.4"/></svg>Lyre</button>
+  </div>
+</nav>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- the instrument ---------- */
+var STR = [
+  ["G3",196.00,"Lowest string; first string of the strum block"],
+  ["A3",220.00,"Darker drone, with string 5"],
+  ["B3",246.94,""],
+  ["C4",261.63,"Middle C"],
+  ["D4",293.66,"Home note; drone; the D scale starts here"],
+  ["E4",329.63,""],
+  ["F4",349.23,"Retune up to F sharp for G major songs"],
+  ["G4",392.00,"Chant line endings"],
+  ["A4",440.00,"Drone fifth; chant reciting tone"],
+  ["B4",493.88,""],
+  ["C5",523.25,"Chant lift on Bragi's name"],
+  ["D5",587.33,"Top of the D scale"],
+  ["E5",659.25,""],
+  ["F5",698.46,"Retune up to F sharp for G major songs"],
+  ["G5",783.99,""],
+  ["A5",880.00,"Highest string"]
+];
+
+/* ---------- links ---------- */
+var LINKS = {
+  hold:{k:"Search",t:"How to hold a lyre harp",s:"YouTube search",u:"https://www.youtube.com/results?search_query=how+to+hold+a+lyre+harp"},
+  tune:{k:"Search",t:"Tuning a 16-string lyre harp",s:"YouTube search",u:"https://www.youtube.com/results?search_query=how+to+tune+16+string+lyre+harp"},
+  damp:{k:"Search",t:"Damping technique for harp beginners",s:"YouTube search",u:"https://www.youtube.com/results?search_query=harp+damping+technique+beginner"},
+  king:{k:"Read",t:"How to Play the Lyre",s:"Michael J. King",u:"https://www.michaeljking.com/how_to_play_the_lyre.htm"},
+  kingvid:{k:"Video",t:"Block-and-strum playing guide",s:"Michael J. King",u:"https://www.youtube.com/watch?v=QHA5SvmJyJM"},
+  kingadv:{k:"Video",t:"Advanced block-and-strum and plucking",s:"Linked from Michael J. King",u:"https://www.youtube.com/watch?v=JTxA-p6XoTQ"},
+  handbook:{k:"PDF",t:"A Handbook for 6-String Lyre: Tunings and Chords",s:"r/lyres community",u:"https://michaeljking.com/lyre-handbook-v20200513.pdf"},
+  cr1:{k:"Video",t:"Old Norse Lesson 1: Introducing the Language",s:"Jackson Crawford",u:"https://youtu.be/yfWoqIryYa8"},
+  cr2:{k:"Video",t:"Old Norse Lesson 2: Pronunciation",s:"Jackson Crawford",u:"https://youtu.be/4rajv8BSzRI"},
+  crIcel:{k:"Video",t:"Old Norse and Modern Icelandic compared",s:"Jackson Crawford",u:"https://youtu.be/5_T5jxWyxk8"},
+  crVol:{k:"Video",t:"Völuspá: Introduction and Readings",s:"Jackson Crawford",u:"https://www.youtube.com/watch?v=E5zEeJiXeKs"},
+  bagby:{k:"Read",t:"The Reconstruction of Eddic Performance",s:"Benjamin Bagby, Sequentia",u:"https://sequentia.org/programs/program05-02.html"},
+  edda:{k:"Listen",t:"Edda: Myths from Medieval Iceland",s:"Sequentia album",u:"https://sequentia.org/recordings/recording23.html"},
+  wtp:{k:"Listen",t:"Eddic poetry in performance",s:"World Tree Project",u:"https://www.worldtreeproject.org/exhibits/show/performance/performance"},
+  beowulf:{k:"Video",t:"Benjamin Bagby performs Beowulf with lyre",s:"YouTube",u:"https://www.youtube.com/watch?v=Ooj25_j3k1E"},
+  dromde:{k:"Listen",t:"Drømte mig en drøm, sung with lyre",s:"YouTube",u:"https://youtu.be/NNiiu9xUUic"},
+  dromdeS:{k:"Search",t:"Drømde mik en drøm i nat",s:"YouTube search",u:"https://www.youtube.com/results?search_query=Dr%C3%B8mde+mik+en+dr%C3%B8m+i+nat"},
+  nhm:{k:"Read",t:"Songs from Iceland, with notes on the Völuspá tune",s:"Nordic Harp Meeting",u:"https://nordic-harp-meeting.eu/?p=409"},
+  laborde:{k:"Read",t:"Essai sur la musique ancienne et moderne (1780)",s:"Internet Archive",u:"https://archive.org/details/essaisurlamusiv100labo"},
+  volS:{k:"Search",t:"Völuspá melody from 1780",s:"YouTube search",u:"https://www.youtube.com/results?search_query=V%C3%B6lusp%C3%A1+melody+1780+La+Borde"},
+  egillS:{k:"Search",t:"Þat mælti mín móðir",s:"YouTube search",u:"https://www.youtube.com/results?search_query=%C3%9Eat+m%C3%A6lti+m%C3%ADn+m%C3%B3%C3%B0ir"},
+  modir:{k:"Listen",t:"Móðir mín í kví kví, sung with lyre",s:"YouTube",u:"https://www.youtube.com/watch?v=y4-XxWXTuak"},
+  ormS:{k:"Search",t:"Ormurin langi",s:"YouTube search",u:"https://www.youtube.com/results?search_query=Ormurin+langi"},
+  nordS:{k:"Search",t:"Nordic folk lyre harp tutorials",s:"YouTube search",u:"https://www.youtube.com/results?search_query=nordic+folk+lyre+harp+tutorial"},
+  sigur:{k:"Listen",t:"Kvæðamaðr: a skald with lyre, taglharpa and drum",s:"Sigurboði on Bandcamp",u:"https://sigurbodi.bandcamp.com"},
+  ragnars:{k:"Read",t:"Ragnarsdrápa, by Bragi Boddason",s:"Skaldic Project",u:"https://skaldic.org/m.php?p=text&i=1130"},
+  funi:{k:"Listen",t:"Funi: Icelandic rímur and song",s:"Bára Grímsdóttir and Chris Foster",u:"https://www.funi-iceland.com/"},
+  ismus:{k:"Listen",t:"Ísmús folk recordings archive",s:"Ísmús, Iceland",u:"https://www.ismus.is"},
+  volsung:{k:"PDF",t:"The Völsung Ballads from the Faroe Islands",s:"OAPEN, free edition",u:"https://library.oapen.org/handle/20.500.12657/100375"},
+  doc:{k:"Doc",t:"Lyre Offerings to Bragi: printable curriculum",s:"Your Claude doc",u:"https://claude.ai/code/artifact/cc4b4a7d-3b64-4113-bedd-8677e7301191"}
+};
+
+/* ---------- texts ---------- */
+var TEXTS = {
+  grim:{title:"Grímnismál 44",sub:"Old Norse, with a plain English gloss. The stanza that names Bragi best of poets.",
+    lines:[
+      ["Askr Yggdrasils,","Yggdrasil's ash","9 → 8"],
+      ["hann er æztr viða,","is the best of trees,","9 → 8"],
+      ["en Skíðblaðnir skipa,","and Skíðblaðnir of ships,","9 → 8"],
+      ["Óðinn ása,","Odin of the Æsir,","9 → 8"],
+      ["en jóa Sleipnir,","and of horses Sleipnir,","9 → 8"],
+      ["Bilröst brúa,","Bifröst of bridges,","9 → 8"],
+      ["en Bragi skálda,","and Bragi of poets,","11 · 9 → 8"],
+      ["Hábrók hauka,","Hábrók of hawks,","9 → 8"],
+      ["en hunda Garmr.","and of hounds Garm.","9 → 7 6 5"]
+    ], drones:[2,3,5,7,9]},
+  vol:{title:"Völuspá, stanza 1",sub:"The seeress asks for silence. Old Norse, with a plain English gloss.",
+    lines:[
+      ["Hljóðs bið ek allar","Hearing I ask of all"],
+      ["helgar kindir,","the holy kindreds,"],
+      ["meiri ok minni","greater and lesser,"],
+      ["mögu Heimdallar;","the sons of Heimdall;"],
+      ["viltu at ek, Valföðr,","you wish, Father of the Slain,"],
+      ["vel fyr telja","that I tell well"],
+      ["forn spjöll fira,","the ancient tales of men,"],
+      ["þau er fremst um man.","the earliest I remember."]
+    ], drones:[2,4,6,8]},
+  egill:{title:"Þat mælti mín móðir",sub:"Words attributed to the skald Egill Skallagrímsson. Old Norse, with a plain English gloss.",
+    lines:[
+      ["Þat mælti mín móðir,","My mother said"],
+      ["at mér skyldi kaupa","that they should buy me"],
+      ["fley ok fagrar árar,","a ship and fine oars,"],
+      ["fara á brott með víkingum,","to sail away with vikings,"],
+      ["standa upp í stafni,","stand up in the prow,"],
+      ["stýra dýrum knerri,","steer a costly ship,"],
+      ["halda svá til hafnar,","hold her into harbor,"],
+      ["höggva mann ok annan.","and cut down man after man."]
+    ], drones:[]}
+};
+
+/* ---------- the curriculum ---------- */
+var PHASES = [
+  {n:1,name:"Your hands",goal:"Tune in five minutes, hold a drone, and strum four chords."},
+  {n:2,name:"Your first chanted offering",goal:"Chant Grímnismál 44, the stanza that names Bragi best of poets, over your own drone."},
+  {n:3,name:"Your first melodies",goal:"Two old melodies, and the first stanza of Völuspá sung to the 1780 tune."},
+  {n:4,name:"Your Bragi set",goal:"A three-piece set, offered whole."}
+];
+
+var WEEKS = [
+ {phase:1,title:"Tuning and holding",
+  goal:"Tune all 16 strings in about five minutes and play the D scale cleanly.",
+  drill:"D scale, strings 5 to 12, up and down. Keep every note the same volume.",
+  offering:"Let strings 5 and 9 ring together, and listen until the sound is gone.",
+  check:"Can you tune all 16 strings in about five minutes?",
+  links:["hold","tune"],
+  strings:{drone:[5,9],play:[6,7,8,10,11,12],cap:"Tape marks go beside 5 (D) and 9 (A). The D scale runs from 5 to 12."},
+  days:[
+   {t:"Meet the lyre",s:["Read the holding and tuning pages in the Elementary Course of Lyre booklet.","Tune all 16 strings to the notes engraved on the frame. The Tuner tab will help.","Put a small piece of tape beside strings 5 and 9 so you can find them at a glance."],l:["hold","tune"]},
+   {t:"Name every string",s:["Tune. New steel strings stretch, so expect a few to slip every day for the first weeks.","Pluck strings 1 to 16 in order and say each note name aloud.","Play the D scale, strings 5 to 12, up and down five times."],l:["tune"]},
+   {t:"Thumb and index",s:["Play the D scale alternating thumb and index finger.","Pluck with the pad of the finger and keep your wrist loose.","Five slow passes. Clean matters more than fast."]},
+   {t:"Warm and bright",s:["Pluck string 9 near the middle, then close to the bottom bridge, and hear the tone change.","Play the scale at the warmer spot.","Hold the last note and let it ring until it fades."]},
+   {t:"Skipping steps",s:["Play the scale in pairs: 5 then 7, 6 then 8, 7 then 9, up to 10 then 12.","Come back down the same way.","Go slowly enough that every note rings clearly."]},
+   {t:"Without looking",s:["Find strings 5 and 9 by touch before you look.","Play the scale from 12 down to 5 and let the D ring.","Tune once more at the end and notice which strings slipped."]}
+  ]},
+ {phase:1,title:"Placing and damping",
+  goal:"Control when a note starts and stops, and hold a drone under a melody.",
+  drill:"D scale with placing: rest the fingertip on the string, then pluck.",
+  offering:"The drone on strings 5 and 9, with your own four-note phrase above it.",
+  check:"Can you keep the drone steady while your right hand plays?",
+  links:["damp"],
+  strings:{drone:[5,9],play:[10,11,12,13],cap:"Drone on 5 and 9. Melody on 10 to 13. For a darker drone, use 2 and 5."},
+  days:[
+   {t:"Place, then pluck",s:["Rest your fingertip on the string before every note today, then pluck.","Play the D scale this way, very slowly.","Notice how placing evens out the volume."]},
+   {t:"Stop the sound",s:["Pluck string 9 and let it ring for a slow count of four.","Stop it with your palm, then try stopping it with one fingertip.","Do the same on strings 5 and 12."],l:["damp"]},
+   {t:"The drone",s:["With your left hand, pluck strings 5 and 9 together every four slow beats.","Let them ring and count aloud.","Try the darker drone on strings 2 and 5 and compare."]},
+   {t:"Drone and melody",s:["Keep the drone going with your left hand.","With your right hand, play single slow notes on strings 10 to 13.","End on string 12, the high D."]},
+   {t:"Your phrase",s:["Make up a four-note phrase on strings 9 to 13 that ends on string 12.","Play it over the drone until it settles.","Write it down as string numbers."]},
+   {t:"Phrase and silence",s:["Play your phrase over the drone ten times.","Damp every string between repeats so there is a moment of silence.","Try it once over the darker drone."]}
+  ]},
+ {phase:1,title:"Block and strum",
+  goal:"Strum four chords by resting left-hand fingers on the strings you want silent.",
+  drill:"D scale, then the drone with your Week 2 phrase.",
+  offering:"A slow strummed pattern that ends on the D home chord.",
+  check:"Can you move between G and C without stopping?",
+  links:["king","kingvid","handbook","kingadv"],
+  strings:{drone:[],play:[1,2,3,4,5,6,7,9],cap:"Strum block on 1 to 6. The D home chord is 5, 7 and 9. Chord shapes are in the Lyre tab."},
+  days:[
+   {t:"How the old lyres were played",s:["Read Michael J. King's How to Play the Lyre page.","Watch his block-and-strum video.","His six strings, G A B C D E, are exactly your strings 1 to 6."],l:["king","kingvid"]},
+   {t:"G chord",s:["Rest left-hand fingers on strings 2, 4 and 6.","Strum across strings 1 to 6. Only 1, 3 and 5 should ring.","Four slow strums, lift, and repeat."]},
+   {t:"C chord",s:["Damp strings 2, 3 and 5. Strings 1, 4 and 6 ring.","Four strums of G, then four of C.","Go back and forth until the change is smooth."]},
+   {t:"D and A minor",s:["D: strings 2 and 5 ring. Damp 1, 3, 4 and 6.","A minor: strings 2, 4 and 6 ring. Damp 1, 3 and 5.","Practice each one alone, then switch between them."]},
+   {t:"The cycle",s:["Cycle G, C, D and A minor, four strums each.","Try one of the written strum patterns on King's page.","Keep the strum light and even."],l:["king","handbook"]},
+   {t:"Home chord",s:["D home chord: strings 5, 7 and 9 ring. Damp 6 and 8.","End every cycle on the home chord.","Let the last chord ring until it is silent."]}
+  ]},
+ {phase:2,title:"Learn the words",
+  goal:"Speak Grímnismál 44 from memory over the drone.",
+  drill:"The chord cycle G, C, D, A minor, ending on the home chord.",
+  offering:"Grímnismál 44, spoken over the drone.",
+  check:"Can you say all nine lines without the page?",
+  links:["cr2","cr1","crIcel"],text:"grim",chant:false,
+  strings:{drone:[5,9],play:[],cap:"Pluck the drone on 5 and 9 at the marked points in the stanza."},
+  days:[
+   {t:"How Old Norse sounds",s:["Watch Jackson Crawford's pronunciation lesson.","Listen for þ and ð, the long vowels marked with accents, and the tapped r.","Read the stanza and its English gloss once, aloud."],l:["cr2"]},
+   {t:"Lines 1 to 3",s:["Say lines 1 to 3 aloud five times with the text in front of you.","Then say them without it.","Check yourself against the text."]},
+   {t:"Lines 4 to 6",s:["Say lines 4 to 6 aloud five times.","Join them to lines 1 to 3.","Say all six from memory."]},
+   {t:"Lines 7 to 9",s:["Line 7 is Bragi's: en Bragi skálda, and Bragi of poets. Give it weight.","Say lines 7 to 9 five times.","Join them to the rest."]},
+   {t:"The whole stanza",s:["Speak all nine lines from the text, then without it.","Mark any line that slips.","Repeat only the marked lines."]},
+   {t:"Over the drone",s:["Pluck strings 5 and 9 before you begin.","Speak the stanza and pluck the drone again after lines 2, 3, 5, 7 and 9.","Let the last drone ring out."]}
+  ]},
+ {phase:2,title:"Put it on notes",
+  goal:"Chant the stanza with the chant formula.",
+  drill:"Pluck string 9 and hum it an octave lower, then string 8. Move between the two.",
+  offering:"As much of the chanted stanza as you have.",
+  check:"Do your lines fall to G, and does the last line come home to D?",
+  links:["bagby","edda","wtp"],text:"grim",chant:true,
+  strings:{drone:[5,9],play:[6,7,8,11],cap:"Recite on A (9). Line endings fall to G (8). Bragi's name lifts to C (11). The last line steps down F, E, D (7, 6, 5). Sing an octave below the strings."},
+  days:[
+   {t:"The method",s:["Read Benjamin Bagby's essay on reconstructing Eddic performance.","Notice how a few notes, repeated and varied, can carry a long poem.","Hum a few lines of the stanza on one note."],l:["bagby"]},
+   {t:"Find your notes",s:["Pluck string 9 (A) and hum it an octave lower, then string 8 (G).","Chant lines 1 to 3: recite on A and drop the last syllable to G.","Pluck the drone after lines 2 and 3."]},
+   {t:"Lines 4 to 6",s:["Chant lines 4 to 6 the same way.","Join them to lines 1 to 3.","Keep the reciting tone steady and let the words set the rhythm."]},
+   {t:"Bragi's line",s:["Line 7: lift Bra- to C (string 11), return to A, and end on G.","Repeat the line until the lift feels natural.","Chant lines 1 to 7."]},
+   {t:"The ending",s:["Chant lines 8 and 9.","On line 9, step down F, E, D (strings 7, 6, 5) to finish.","Let the drone ring after the last syllable."]},
+   {t:"The whole chant",s:["Chant all nine lines with the text.","Pluck the drone at the marked points.","Do it twice."],l:["edda"]}
+  ]},
+ {phase:2,title:"Make it yours",
+  goal:"Chant Grímnismál 44 from memory as your standing offering.",
+  drill:"The chord cycle, then the last line of the chant on its own.",
+  offering:"Grímnismál 44, chanted. From here on it is your standing nightly offering.",
+  check:"Could you chant it with no text and no stops?",
+  links:["wtp","edda","beowulf"],text:"grim",chant:true,
+  strings:{drone:[5,9],play:[6,7,8,11],cap:"Same notes as last week. Try the darker drone on 2 and 5 on Day 5."},
+  days:[
+   {t:"From memory",s:["Chant the full stanza with the text hidden.","Look only when you are stuck.","Chant it once more."]},
+   {t:"Listen back",s:["Record one run on your phone.","Listen for breath: where do you run short?","Mark breath points in your copy of the text."]},
+   {t:"Fix one line",s:["Work only on your weakest line today.","Then chant the whole stanza once."]},
+   {t:"Hear the masters",s:["Listen to the Eddic performances on the World Tree Project page.","Then chant yours, borrowing one thing you heard."],l:["wtp"]},
+   {t:"Darker drone",s:["Chant with the drone on strings 2 and 5.","Compare it with 5 and 9, and keep the one you prefer."]},
+   {t:"Two clean runs",s:["Chant it twice through without stopping.","Leave a full breath of silence before and after."]}
+  ]},
+ {phase:3,title:"Drømde mik en drøm i nat",
+  intro:"A short melody written down around 1300 in the Codex Runicus, one of the oldest notated Scandinavian songs.",
+  goal:"Play a medieval Scandinavian melody over a drone.",
+  drill:"Grímnismál 44, chanted once to keep it warm.",
+  offering:"The melody, then Grímnismál 44.",
+  check:"Can you play the melody through at a slow, steady pace?",
+  links:["dromde","dromdeS"],
+  days:[
+   {t:"Hear it first",s:["Ask Claude for the string-by-string notation for your lyre.","Listen to two recordings of the song.","Hum the melody along with one of them."],l:["dromde","dromdeS"]},
+   {t:"First phrase",s:["Learn the first phrase, right hand only.","Say the string numbers aloud as you play.","Repeat it until you can play it without the notation."]},
+   {t:"Second phrase",s:["Learn the second phrase the same way.","Join the two phrases."]},
+   {t:"The whole melody",s:["Play the melody through slowly.","Play it once more, a little steadier."]},
+   {t:"Add the drone",s:["Add a drone on the tune's home note with your left hand, plucked at the start of each phrase.","Your notation names the string."]},
+   {t:"Three times through",s:["Play the melody three times.","Then chant Grímnismál 44."]}
+  ]},
+ {phase:3,title:"The Völuspá tune",
+  intro:"Printed in 1780 as a melody Icelanders used for Eddic poems. Nobody knows how old it really is, but it is the oldest written tune tied to the Edda.",
+  goal:"Play the 1780 Völuspá melody from memory.",
+  drill:"Drømde mik en drøm, once through.",
+  offering:"The Völuspá tune, played.",
+  check:"Can you play it without the notation?",
+  links:["nhm","volS","laborde"],
+  days:[
+   {t:"Where it comes from",s:["Ask Claude for the string-by-string notation.","Read the Nordic Harp Meeting note on the tune.","If you are curious, page through the 1780 book where it was printed."],l:["nhm","laborde"]},
+   {t:"Listen",s:["Listen to one or two performances of the tune.","Hum along until you can hum it alone."],l:["volS"]},
+   {t:"First half",s:["Learn the first half of the tune.","Repeat it until it is under your fingers."]},
+   {t:"Second half",s:["Learn the second half.","Join both halves."]},
+   {t:"With the drone",s:["Play the whole tune with a drone on its home note.","Keep it slow."]},
+   {t:"From memory",s:["Play it from memory twice.","Then chant Grímnismál 44."]}
+  ]},
+ {phase:3,title:"Sing Völuspá, stanza 1",
+  goal:"Sing the first stanza of Völuspá to the tune, over the drone.",
+  drill:"Play the Völuspá tune on the lyre.",
+  offering:"Völuspá stanza 1, sung.",
+  check:"Can you sing it through without the text?",
+  links:["crVol","cr2","wtp"],text:"vol",
+  days:[
+   {t:"Hear the stanza",s:["Watch Jackson Crawford's Völuspá readings and listen closely to stanza 1.","Read the English gloss."],l:["crVol"]},
+   {t:"Lines 1 to 4",s:["Speak lines 1 to 4 aloud five times.","Then say them from memory."]},
+   {t:"Lines 5 to 8",s:["Speak lines 5 to 8 aloud five times.","Then the whole stanza from memory."]},
+   {t:"Sing it bare",s:["Sing the stanza to the tune with no lyre.","Play the first note first if you need it."]},
+   {t:"Sing with the drone",s:["Sing the stanza with the drone between lines.","Breathe while the drone rings."]},
+   {t:"Play, then sing",s:["Play the tune once on the lyre.","Then sing the stanza over the drone."]}
+  ]},
+ {phase:4,title:"Þat mælti mín móðir",
+  intro:"A traditional Icelandic song. The words are attributed to the skald Egill Skallagrímsson.",
+  goal:"Sing Egill's verse while you strum chords.",
+  drill:"Grímnismál 44 and Völuspá, on alternating days.",
+  offering:"Þat mælti mín móðir, sung with the lyre.",
+  check:"Can you strum and sing together without losing the words?",
+  links:["egillS","nhm","king"],text:"egill",
+  strings:{drone:[],play:[1,2,3,4,5,6],cap:"Strum block on 1 to 6. Your notation names the chords; the shapes are in the Lyre tab."},
+  days:[
+   {t:"Hear it",s:["Ask Claude for the melody and chords mapped to your strings.","Listen to a recording or two.","Read the Nordic Harp Meeting note on the song."],l:["egillS","nhm"]},
+   {t:"The words",s:["Speak the eight lines with the gloss beside you.","Then say them from memory."]},
+   {t:"The melody",s:["Play the melody on the lyre.","Hum it as you play."]},
+   {t:"Sing it bare",s:["Sing the melody with no lyre.","Then sing it while plucking only the first note of each line."]},
+   {t:"Add chords",s:["Strum the chords from your notation on strings 1 to 6 while you sing.","Keep it simple: one strum per line to start."],l:["king"]},
+   {t:"Three runs",s:["Sing and strum it three times.","Then chant Grímnismál 44."]}
+  ]},
+ {phase:4,title:"Your choice",
+  goal:"Learn one more song you love.",
+  drill:"Run your set so far: Grímnismál 44, then Völuspá.",
+  offering:"Your chosen song.",
+  check:"Is the song steady enough to offer next week?",
+  links:["ormS","nordS","sigur","modir"],
+  days:[
+   {t:"Choose",s:["Pick one: Ormurin langi, the Faroese saga ballad, or a modern Nordic folk song you love.","Listen to it three times.","Ask Claude to map it to your strings, or find a lyre tutorial."],l:["ormS","nordS"]},
+   {t:"First phrase",s:["Learn the first melody phrase.","Repeat it until it is under your fingers."]},
+   {t:"The rest of the melody",s:["Learn the rest of the melody.","Play it through slowly."]},
+   {t:"Accompaniment",s:["Add a drone or simple chords.","If you will sing it, speak the words over the accompaniment first."]},
+   {t:"Together",s:["Put melody, words and accompaniment together.","Slow is fine."]},
+   {t:"Three runs",s:["Run the song three times.","Then chant Grímnismál 44."]}
+  ]},
+ {phase:4,title:"Assemble and offer",
+  goal:"Offer a three-piece set for Bragi.",
+  drill:"Tune carefully. The set deserves a fresh tuning.",
+  offering:"The full set: Grímnismál 44, Völuspá stanza 1, and your song.",
+  check:"Does the set run from start to finish without stopping?",
+  links:["ragnars","funi","ismus","volsung"],
+  days:[
+   {t:"Set the order",s:["The order: Grímnismál 44, then Völuspá stanza 1, then your Week 10 or Week 11 song.","Run Grímnismál 44 twice."]},
+   {t:"Völuspá",s:["Play the tune once to set the pitch.","Sing Völuspá stanza 1 twice."]},
+   {t:"Your song",s:["Run your song twice."]},
+   {t:"Join them",s:["Run the whole set.","Let the drone carry you from one piece to the next."]},
+   {t:"Second full run",s:["Run the whole set again.","Mark any join that stumbles and practice just that join."]},
+   {t:"Record it",s:["Run the set and record it.","Listen once, kindly."]}
+  ],
+  day7:{t:"Offer the set",s:["Tune, then sit quietly for a moment.","Offer the full set at a Bragi sitting or a blót.","Choose your next 12 weeks: Bragi Boddason's Ragnarsdrápa, Icelandic rímur, or the Faroese ballads of Sigurd."],l:["ragnars","funi","volsung"]}}
+];
+
+/* ---------- helpers ---------- */
+var TOTAL = 84;
+function key(w,d){return w+"-"+d;}
+function from(i){return {w:Math.floor(i/7)+1,d:(i%7)+1};}
+function idx(w,d){return (w-1)*7+(d-1);}
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function todayStr(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function fmtDate(s){if(!s||typeof s!=="string")return "";var p=s.split("-");if(p.length!==3)return "";var d=new Date(+p[0],+p[1]-1,+p[2]);return d.toLocaleDateString(undefined,{month:"short",day:"numeric"});}
+function dayData(w,d){
+  var W=WEEKS[w-1];
+  if(d<=6) return W.days[d-1];
+  if(W.day7) return W.day7;
+  return {t:"Offering day",s:["Tune, then run this week's work once as your warm-up.","Offer it whole at tonight's Bragi sitting.","Before you move on: "+W.check+" If not, repeat a day or two of this week."],l:[]};
+}
+var ARROW='<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M5.5 3.5h7v7M12.5 3.5l-9 9"/></svg>';
+var FORK='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8.5 2.5v8a3.5 3.5 0 0 0 7 0v-8"/><path d="M12 14v7.5"/></svg>';
+
+/* ---------- state + storage ---------- */
+var HAS_CLAUDE = !!(window.claude && typeof window.claude.use==="function");
+var LS_KEY="bragiLyre.v1";
+var state={done:{},localOnly:false,view:0,tab:"session",userNav:false};
+var sync={mode:HAS_CLAUDE?"connecting":"device",ref:null,writing:false,dirty:false};
+
+function loadLocal(){
+  try{var j=JSON.parse(localStorage.getItem(LS_KEY)||"null");if(j&&j.done&&typeof j.done==="object"){state.done=j.done;state.localOnly=!!j.localOnly;}}catch(e){}
+}
+function saveLocal(){try{localStorage.setItem(LS_KEY,JSON.stringify({done:state.done,localOnly:state.localOnly}));}catch(e){}}
+function doneCount(){var n=0;for(var i=0;i<TOTAL;i++){var f=from(i);if(state.done[key(f.w,f.d)])n++;}return n;}
+function nextIndex(){for(var i=0;i<TOTAL;i++){var f=from(i);if(!state.done[key(f.w,f.d)])return i;}return TOTAL-1;}
+
+function setSync(m){sync.mode=m;var el=$("syncline");if(el)el.textContent=syncText();var s=$("savedline");if(s)s.textContent=syncText();}
+function syncText(){
+  if(sync.mode==="account")return "Progress saves to your Claude account and syncs across your devices.";
+  if(sync.mode==="connecting")return "Connecting to your account. Progress is kept on this device meanwhile.";
+  return "Progress saves on this device.";
+}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
+
+function initSync(){
+  if(!HAS_CLAUDE){setSync("device");return;}
+  Promise.all([window.claude.use("db"),window.claude.use("user")]).then(function(r){
+    var db=r[0],user=r[1];
+    if(!db||!user){setSync("device");return null;}
+    return user.id().then(function(uid){
+      if(!uid){setSync("device");return;}
+      var ref;
+      try{ref=db.doc("data/users/"+uid+"/progress");}catch(e){setSync("device");return;}
+      sync.ref=ref;
+      var first=true;
+      ref.onSnapshot(function(snap){
+        if(sync.writing||sync.dirty){first=false;return;}
+        var body=snap.exists?(snap.data()||{}):{};
+        var server=(body.done&&typeof body.done==="object")?body.done:{};
+        if(first){
+          first=false;
+          if(state.localOnly){
+            var merged={};var k;
+            for(k in server)merged[k]=server[k];
+            for(k in state.done)merged[k]=state.done[k];
+            state.done=merged;state.localOnly=false;saveLocal();setSync("account");
+            if(Object.keys(merged).length!==Object.keys(server).length)queueWrite();
+            afterData();return;
+          }
+        }
+        var copy={};for(var k2 in server)copy[k2]=server[k2];
+        state.done=copy;saveLocal();setSync("account");afterData();
+      },function(){sync.ref=null;setSync("device");});
+    });
+  }).catch(function(){setSync("device");});
+}
+function afterData(){
+  if(!state.userNav)state.view=nextIndex();
+  renderChrome();
+  if(state.tab==="session")renderSession();
+  if(state.tab==="plan")renderPlan();
+}
+function queueWrite(){
+  if(!sync.ref){state.localOnly=true;saveLocal();return;}
+  sync.dirty=true;
+  if(!sync.writing)flush();
+}
+function flush(){
+  sync.writing=true;
+  (async function(){
+    while(sync.dirty){
+      sync.dirty=false;
+      var body={done:Object.assign({},state.done),updated:new Date().toISOString()};
+      try{await sync.ref.set(body);}
+      catch(e){
+        if(e&&e.code==="unavailable"){
+          await sleep(700+Math.random()*900);
+          try{await sync.ref.set(body);}catch(e2){state.localOnly=true;saveLocal();setSync("device");break;}
+        }else{state.localOnly=true;saveLocal();setSync("device");break;}
+      }
+    }
+    sync.writing=false;
+  })();
+}
+function toggleDone(i){
+  var f=from(i),k=key(f.w,f.d);
+  if(state.done[k])delete state.done[k];else state.done[k]=todayStr();
+  saveLocal();queueWrite();
+  renderChrome();renderSession();
+}
+
+/* ---------- strings figure ---------- */
+function stringX(i){return 24+(i-1)*19.6;}
+function stringTop(i){return 26+46*Math.pow((i-1)/15,1.15);}
+function stringBot(i){return 128-7*Math.sin(Math.PI*(i-1)/15);}
+function stringsSVG(o){
+  o=o||{};var drone=o.drone||[],play=o.play||[],tuned=o.tuned||{},sel=o.sel||0,active=o.active||0;
+  var W=342,H=160,s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(o.label||"The 16 strings of your lyre, longest on the left")+'">';
+  var yoke="M"+(stringX(1)-10)+" "+(stringTop(1)-6);
+  for(var i=1;i<=16;i++)yoke+=" L"+stringX(i)+" "+(stringTop(i)-3);
+  yoke+=" L"+(stringX(16)+10)+" "+(stringTop(16)-1);
+  var br="M"+(stringX(1)-10)+" "+(stringBot(1)+2);
+  for(i=1;i<=16;i++)br+=" L"+stringX(i)+" "+(stringBot(i)+2);
+  br+=" L"+(stringX(16)+10)+" "+(stringBot(16)+2);
+  s+='<path d="'+yoke+'" fill="none" stroke="var(--line)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>';
+  s+='<path d="'+br+'" fill="none" stroke="var(--line)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>';
+  for(i=1;i<=16;i++){
+    var x=stringX(i),t=stringTop(i),b=stringBot(i);
+    var isD=drone.indexOf(i)>=0,isP=play.indexOf(i)>=0,isT=!!tuned[i],isS=sel===i,isA=active===i;
+    var col="var(--line)",w=1.6-(i-1)*0.03,txt="var(--muted)",fw="500";
+    if(isP){col="var(--ink)";w+=0.7;txt="var(--ink)";fw="700";}
+    if(isT){col="var(--ok)";w+=0.6;txt="var(--ok)";fw="700";}
+    if(isD||isS||isA){col="var(--brass-hi)";w+=1.6;txt="var(--brass)";fw="700";}
+    s+='<line x1="'+x+'" y1="'+t+'" x2="'+x+'" y2="'+b+'" stroke="'+col+'" stroke-width="'+w.toFixed(2)+'" stroke-linecap="round"/>';
+    s+='<text x="'+x+'" y="'+(t-9)+'" text-anchor="middle" font-size="8.5" fill="'+txt+'" font-weight="'+fw+'">'+STR[i-1][0]+'</text>';
+    s+='<text x="'+x+'" y="'+(b+18)+'" text-anchor="middle" font-size="10" fill="'+txt+'" font-weight="'+fw+'">'+i+'</text>';
+  }
+  s+="</svg>";return s;
+}
+
+/* ---------- chrome ---------- */
+function renderChrome(){
+  var n=doneCount();
+  $("count").textContent=n+" of 84 done";
+  var bar="";
+  for(var w=1;w<=12;w++){
+    var c=0;for(var d=1;d<=7;d++)if(state.done[key(w,d)])c++;
+    var ph=(w===4||w===7||w===10)?' class="ph"':"";
+    bar+="<i"+ph+"><b style=\"width:"+(c/7*100).toFixed(1)+"%\"></b></i>";
+  }
+  $("bar").innerHTML=bar;
+}
+function setTab(t,push){
+  if(state.tab==="tuner"&&t!=="tuner")tunerLeave();
+  state.tab=t;
+  ["session","tuner","plan","lyre"].forEach(function(n){
+    $("v-"+n).hidden=(n!==t);
+    var b=$("t-"+n);if(n===t)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");
+  });
+  if(t==="session")renderSession();
+  if(t==="plan")renderPlan();
+  if(t==="lyre")renderLyre();
+  if(t==="tuner")renderTuner();
+  try{window.scrollTo(0,0);}catch(e){}
+  if(push!==false){try{history.replaceState(null,"",t==="session"?"#w"+from(state.view).w+"d"+from(state.view).d:"#"+t);}catch(e){}}
+}
+function go(i){state.view=Math.max(0,Math.min(TOTAL-1,i));state.userNav=true;setTab("session");}
+
+/* ---------- session ---------- */
+function linkCard(id){
+  var L=LINKS[id];if(!L)return "";
+  return '<a class="lk" href="'+esc(L.u)+'" target="_blank" rel="noopener noreferrer"><span class="kind">'+esc(L.k)+'</span><span><span class="tt">'+esc(L.t)+'</span><br><span class="src">'+esc(L.s)+'</span></span>'+ARROW+'</a>';
+}
+function poemHTML(id,chant){
+  var T=TEXTS[id];if(!T)return "";
+  var h='<section class="poem" aria-label="'+esc(T.title)+'"><header><h3>'+esc(T.title)+'</h3><p>'+esc(T.sub)+'</p></header>';
+  T.lines.forEach(function(L,i){
+    var n=i+1;
+    h+='<div class="pl"><span class="ln">'+n+'</span><span class="on">'+esc(L[0])+'</span>';
+    if(chant&&L[2])h+='<span class="ch"><small>strings</small>'+esc(L[2])+'</span>';
+    h+='<span class="en">'+esc(L[1])+'</span>';
+    if(T.drones.indexOf(n)>=0)h+='<span class="dr">Drone</span>';
+    h+='</div>';
+  });
+  if(chant)h+='<p class="legend">Strings column: recite on the first string, end on the last. 11 is the lift on Bragi\'s name. Sing an octave below the strings.</p>';
+  else if(T.drones.length)h+='<p class="legend">Pluck strings 5 and 9 before you begin and wherever a drone is marked.</p>';
+  return h+'</section>';
+}
+function renderSession(){
+  var v=$("v-session");
+  var f=from(state.view),w=f.w,d=f.d,W=WEEKS[w-1],P=PHASES[W.phase-1],D=dayData(w,d);
+  var k=key(w,d),done=state.done[k],nx=nextIndex(),isNext=(state.view===nx&&!done);
+  var h='<div class="weekstrip" role="group" aria-label="Days of week '+w+'">';
+  for(var i=1;i<=7;i++){
+    var di=idx(w,i),cl="dchip"+(state.done[key(w,i)]?" done":"")+(i===d?" here":"")+(di===nx&&!state.done[key(w,i)]?" next":"");
+    h+='<button type="button" class="'+cl+'" data-go="'+di+'" aria-label="Week '+w+', day '+i+(state.done[key(w,i)]?", done":"")+'"'+(i===d?' aria-current="true"':'')+'><span class="n">'+i+'</span><span class="w">'+(i===7?"Offer":(di===nx&&!state.done[key(w,i)]?"Next":"Day"))+'</span></button>';
+  }
+  h+='</div>';
+  h+='<div class="head"><div class="eyebrow"><span>Phase '+P.n+' · '+esc(P.name)+'</span><span>Week '+w+', day '+d+'</span>';
+  if(isNext)h+='<span class="badge">Up next</span>';
+  else if(done)h+='<span class="badge ok">Done '+esc(fmtDate(done))+'</span>';
+  h+='</div><h1 class="dtitle">'+esc(D.t)+'</h1>';
+  h+='<p class="goal"><b>Week '+w+': '+esc(W.title)+'.</b> '+esc(W.goal)+'</p>';
+  if(W.intro)h+='<p class="goal">'+esc(W.intro)+'</p>';
+  h+='</div>';
+
+  h+='<div class="blocks">';
+  h+='<div class="blk"><div class="lab"><span>Tune</span><span class="t">5 min</span></div><div class="tune-row"><p>Tune all 16 strings to the notes engraved on the frame.</p><button type="button" class="ghost" data-tab="tuner">'+FORK+'Open tuner</button></div></div>';
+  h+='<div class="blk"><div class="lab"><span>On 30-minute days</span><span class="t">10 min</span></div><p>'+esc(W.drill)+'</p></div>';
+  h+='<div class="blk"><div class="lab"><span>Today\'s work</span><span class="t">10 to 15 min</span></div><ol class="steps">';
+  D.s.forEach(function(s){h+='<li><span>'+esc(s)+'</span></li>';});
+  h+='</ol></div></div>';
+
+  var dl=(D.l||[]).filter(function(x){return LINKS[x];});
+  var wl=(W.links||[]).filter(function(x){return LINKS[x]&&dl.indexOf(x)<0;});
+  if(dl.length||wl.length){
+    h+='<section class="links" aria-label="Links">';
+    if(dl.length){h+='<h2 class="sec">Open today</h2><div class="grid2">'+dl.map(linkCard).join("")+'</div>';}
+    if(wl.length){h+=(dl.length?'<h3>Also this week</h3>':'<h2 class="sec">This week\'s links</h2>')+'<div class="grid2">'+wl.map(linkCard).join("")+'</div>';}
+    h+='</section>';
+  }
+
+  if(W.text)h+=poemHTML(W.text,!!W.chant);
+
+  if(W.strings){
+    h+='<figure class="str">'+stringsSVG({drone:W.strings.drone,play:W.strings.play,label:"Strings for this week"})+'<div class="key">';
+    if(W.strings.drone.length)h+='<span><i style="background:var(--brass-hi)"></i>Drone</span>';
+    if(W.strings.play.length)h+='<span><i style="background:var(--ink)"></i>Played</span>';
+    h+='</div><figcaption>'+esc(W.strings.cap)+'</figcaption></figure>';
+  }
+
+  h+='<section class="offer" aria-label="Offering"><div class="lab"><span>'+(d===7?"Offering day":"Tonight at the Bragi sitting")+'</span></div><p class="what">'+esc(W.offering)+'</p><p class="sub">'+(d===7?"Offer it whole.":"Bring whatever you have, finished or not.")+'</p></section>';
+
+  h+='<div class="actions">';
+  if(!done){h+='<button type="button" class="primary" id="markdone">Mark session done</button>';}
+  else{
+    h+='<div class="donebar"><span><strong>Done</strong> '+esc(fmtDate(done))+'</span><button type="button" class="textbtn" id="undone">Undo</button></div>';
+    if(nx!==state.view&&!(nx===TOTAL-1&&state.done[key(12,7)]))h+='<button type="button" class="primary" data-go="'+nx+'">Go to your next session</button>';
+  }
+  h+='<p class="saved" id="savedline">'+esc(syncText())+'</p></div>';
+  h+='<nav class="pager" aria-label="Sessions"><button type="button" data-go="'+(state.view-1)+'"'+(state.view===0?" disabled":"")+'>‹ Previous</button><button type="button" data-go="'+(state.view+1)+'"'+(state.view===TOTAL-1?" disabled":"")+'>Next ›</button></nav>';
+  v.innerHTML=h;
+  var md=$("markdone");if(md)md.onclick=function(){toggleDone(state.view);};
+  var ud=$("undone");if(ud)ud.onclick=function(){toggleDone(state.view);};
+}
+
+/* ---------- plan ---------- */
+function backupCode(){
+  var hex="";
+  for(var i=0;i<TOTAL;i+=4){var n=0;for(var b=0;b<4;b++){var f=from(i+b);if(i+b<TOTAL&&state.done[key(f.w,f.d)])n|=(1<<b);}hex+=n.toString(16);}
+  return "BRAGI1-"+hex.toUpperCase();
+}
+function applyCode(code){
+  var m=/^BRAGI1-([0-9A-F]{21})$/i.exec(String(code||"").trim());
+  if(!m)return -1;
+  var hex=m[1],added=0,t=todayStr();
+  for(var j=0;j<21;j++){var n=parseInt(hex[j],16);for(var b=0;b<4;b++){var i=j*4+b;if(i<TOTAL&&(n&(1<<b))){var f=from(i),k=key(f.w,f.d);if(!state.done[k]){state.done[k]=t;added++;}}}}
+  return added;
+}
+function renderPlan(){
+  var v=$("v-plan"),nx=nextIndex(),h="";
+  PHASES.forEach(function(P){
+    h+='<section class="phase"><header><span class="pn">Phase '+P.n+'</span><h2>'+esc(P.name)+'</h2><p>'+esc(P.goal)+'</p></header>';
+    WEEKS.forEach(function(W,wi){
+      if(W.phase!==P.n)return;
+      var w=wi+1,c=0;for(var d=1;d<=7;d++)if(state.done[key(w,d)])c++;
+      h+='<div class="wk"><div class="wt"><b>Week '+w+' · '+esc(W.title)+'</b><span>'+c+' of 7</span></div><div class="cells">';
+      for(d=1;d<=7;d++){
+        var i=idx(w,d),dn=state.done[key(w,d)];
+        var cl="cell"+(dn?" done":"")+(i===nx&&!dn?" next":"")+(d===7?" o":"");
+        h+='<button type="button" class="'+cl+'" data-go="'+i+'" aria-label="Week '+w+', day '+d+(d===7?", offering day":"")+(dn?", done":"")+'">'+d+'</button>';
+      }
+      h+='</div></div>';
+    });
+    h+='</section>';
+  });
+  h+='<section class="note"><h2>Your progress</h2><p id="syncline">'+esc(syncText())+'</p><p>Day 7 of each week, marked with a small diamond, is an offering day.</p>'+linkCard("doc")+'</section>';
+  h+='<section class="note"><h2>Move progress between versions</h2><p>The Claude link and the installed Android app keep progress separately. Copy this code in one and load it in the other.</p>';
+  h+='<div class="bk"><code id="bkcode">'+backupCode()+'</code><button type="button" class="ghost" id="bkcopy">Copy</button></div>';
+  h+='<div class="bk"><label for="bkin" hidden>Progress code</label><input id="bkin" type="text" placeholder="Paste a progress code" autocomplete="off" spellcheck="false"><button type="button" class="ghost" id="bkload">Load</button></div><p class="msg" id="bkmsg" aria-live="polite"></p></section>';
+  v.innerHTML=h;
+  $("bkcopy").onclick=function(){
+    var code=backupCode(),msg=$("bkmsg");
+    try{navigator.clipboard.writeText(code).then(function(){msg.textContent="Copied.";},function(){selectCode();msg.textContent="Code selected. Copy it with your phone's copy option.";});}
+    catch(e){selectCode();msg.textContent="Code selected. Copy it with your phone's copy option.";}
+  };
+  $("bkload").onclick=function(){
+    var n=applyCode($("bkin").value),msg=$("bkmsg");
+    if(n<0){msg.textContent="That code doesn't look right. It starts with BRAGI1- followed by 21 letters and numbers.";return;}
+    saveLocal();queueWrite();renderChrome();renderPlan();
+    $("bkmsg").textContent=n?("Loaded. "+n+" session"+(n===1?"":"s")+" marked done."):"Loaded. Nothing new to add.";
+  };
+}
+function selectCode(){try{var r=document.createRange();r.selectNodeContents($("bkcode"));var s=getSelection();s.removeAllRanges();s.addRange(r);}catch(e){}}
+
+/* ---------- lyre reference ---------- */
+var lyreDone=false;
+function renderLyre(){
+  if(lyreDone)return;lyreDone=true;
+  var h='<div class="head"><div class="eyebrow"><span>VixxNoxx 16-string</span></div><h1 class="dtitle">Your lyre</h1><p class="goal">Tuned G3 to A5 in natural notes only, the white keys of a piano. No levers. Your home note is D, string 5. Strings are counted from the longest.</p></div>';
+  h+='<figure class="str">'+stringsSVG({drone:[5,9],play:[],label:"All 16 strings with note names"})+'<div class="key"><span><i style="background:var(--brass-hi)"></i>Home drone, D and A</span></div></figure>';
+  h+='<div class="tbl"><table><thead><tr><th>String</th><th>Note</th><th>Use</th></tr></thead><tbody>';
+  STR.forEach(function(s,i){h+='<tr'+((i===4||i===8)?' class="hl"':'')+'><td class="num">'+(i+1)+'</td><td class="nt">'+s[0]+'</td><td>'+esc(s[2])+'</td></tr>';});
+  h+='</tbody></table></div>';
+  h+='<h2 class="sec">Shapes you use every week</h2><div class="tbl"><table><thead><tr><th>Shape</th><th>Strings</th></tr></thead><tbody>';
+  h+='<tr><td>D scale</td><td>5 to 12</td></tr><tr><td>Drone</td><td>5 and 9 together</td></tr><tr><td>Darker drone</td><td>2 and 5 together</td></tr><tr><td>D home chord</td><td>5, 7 and 9 ring; damp 6 and 8</td></tr></tbody></table></div>';
+  h+='<h2 class="sec">Block-and-strum chords</h2><p class="goal">Strum strings 1 to 6. Rest left-hand fingers on the damped strings so only the ringing strings sound. After Michael J. King\'s charts.</p>';
+  h+='<div class="tbl"><table><thead><tr><th>Chord</th><th>Ring</th><th>Damp</th></tr></thead><tbody>';
+  h+='<tr><td class="nt">G</td><td>1, 3, 5</td><td>2, 4, 6</td></tr><tr><td class="nt">C</td><td>1, 4, 6</td><td>2, 3, 5</td></tr><tr><td class="nt">D</td><td>2, 5</td><td>1, 3, 4, 6</td></tr><tr><td class="nt">Am</td><td>2, 4, 6</td><td>1, 3, 5</td></tr></tbody></table></div>';
+  h+='<section class="note"><h2>When a song needs F sharp</h2><p>Retune strings 7 and 14 up a half step, to F sharp. That opens G major and E minor. Tune them back to F when you are done; it takes about two minutes.</p></section>';
+  $("v-lyre").innerHTML=h;
+}
+
+/* ---------- audio ---------- */
+var AC=null,master=null,pluckWave=null,holdWave=null;
+function audio(){
+  if(!AC){
+    var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;
+    AC=new C();master=AC.createGain();master.gain.value=0.9;master.connect(AC.destination);
+    var n=14,re=new Float32Array(n),im=new Float32Array(n);
+    for(var k=1;k<n;k++)im[k]=1/Math.pow(k,1.25);
+    pluckWave=AC.createPeriodicWave(re,im);
+    var im2=new Float32Array(n);im2[1]=1;im2[2]=0.35;im2[3]=0.15;im2[4]=0.06;
+    holdWave=AC.createPeriodicWave(re,im2);
+  }
+  if(AC.state==="suspended")AC.resume();
+  return AC;
+}
+function pluck(freq){
+  var ctx=audio();if(!ctx)return;
+  var t=ctx.currentTime,o=ctx.createOscillator(),lp=ctx.createBiquadFilter(),g=ctx.createGain();
+  o.setPeriodicWave(pluckWave);o.frequency.value=freq;
+  lp.type="lowpass";lp.Q.value=0.7;lp.frequency.setValueAtTime(Math.min(freq*9,16000),t);lp.frequency.exponentialRampToValueAtTime(freq*1.6,t+1.8);
+  g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.32,t+0.006);g.gain.exponentialRampToValueAtTime(0.0001,t+3.2);
+  o.connect(lp);lp.connect(g);g.connect(master);o.start(t);o.stop(t+3.3);
+}
+var held=null;
+function holdStart(i){
+  holdStop();var ctx=audio();if(!ctx)return;
+  var t=ctx.currentTime,o=ctx.createOscillator(),g=ctx.createGain();
+  o.setPeriodicWave(holdWave);o.frequency.value=STR[i-1][1];
+  g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.2,t+0.08);
+  o.connect(g);g.connect(master);o.start(t);held={o:o,g:g,i:i};
+}
+function holdStop(){
+  if(!held||!AC)return;var t=AC.currentTime;
+  try{held.g.gain.cancelScheduledValues(t);held.g.gain.setValueAtTime(Math.max(held.g.gain.value,0.0001),t);held.g.gain.exponentialRampToValueAtTime(0.0001,t+0.12);held.o.stop(t+0.15);}catch(e){}
+  held=null;
+}
+
+/* ---------- pitch detection (YIN) ---------- */
+function yin(buf,sr){
+  var N=buf.length,half=N>>1,minTau=Math.max(2,Math.floor(sr/1100)),maxTau=Math.min(half-1,Math.ceil(sr/150));
+  var d=new Float32Array(maxTau+2),c=new Float32Array(maxTau+2);
+  for(var tau=1;tau<=maxTau+1;tau++){var s=0;for(var i=0;i<half;i++){var x=buf[i]-buf[i+tau];s+=x*x;}d[tau]=s;}
+  c[0]=1;var run=0;
+  for(tau=1;tau<=maxTau+1;tau++){run+=d[tau];c[tau]=run>0?d[tau]*tau/run:1;}
+  var best=-1;
+  for(tau=minTau;tau<=maxTau;tau++){if(c[tau]<0.15){while(tau+1<=maxTau&&c[tau+1]<c[tau])tau++;best=tau;break;}}
+  if(best<0)return null;
+  var a=c[best-1],b=c[best],e=c[best+1],den=a+e-2*b;
+  var tt=den!==0?best+(a-e)/(2*den):best;
+  return {freq:sr/tt,clarity:1-b};
+}
+var NAMES=["C","C♯","D","D♯","E","F","F♯","G","G♯","A","A♯","B"];
+function chromName(f){var m=Math.round(69+12*Math.log2(f/440));return NAMES[((m%12)+12)%12]+(Math.floor(m/12)-1);}
+function centsOf(f,ref){return 1200*Math.log2(f/ref);}
+
+/* ---------- tuner ---------- */
+var MIC_OK=!HAS_CLAUDE&&!!(window.isSecureContext&&navigator.mediaDevices&&navigator.mediaDevices.getUserMedia);
+var tuner={mode:MIC_OK?"mic":"ref",hold:false,sel:0,tuned:{},playing:0,on:false,stream:null,an:null,buf:null,raf:0,last:0,hist:[],inSince:0,inTarget:0,wake:null,err:""};
+
+function gaugeSVG(){
+  var s='<svg class="gauge" viewBox="0 0 340 170" aria-hidden="true">';
+  function pt(cents,r){var a=(cents/50)*60*Math.PI/180;return [170+r*Math.sin(a),150-r*Math.cos(a)];}
+  var p1=pt(-5,118),p2=pt(5,118);
+  s+='<path d="M'+pt(-50,118).join(" ")+' A118 118 0 0 1 '+pt(50,118).join(" ")+'" fill="none" stroke="var(--sunk)" stroke-width="14" stroke-linecap="round"/>';
+  s+='<path d="M'+p1.join(" ")+' A118 118 0 0 1 '+p2.join(" ")+'" fill="none" stroke="var(--ok)" stroke-width="14"/>';
+  for(var c=-50;c<=50;c+=10){var a=pt(c,100),b=pt(c,c%50===0?86:92);s+='<line x1="'+a[0].toFixed(1)+'" y1="'+a[1].toFixed(1)+'" x2="'+b[0].toFixed(1)+'" y2="'+b[1].toFixed(1)+'" stroke="var(--muted)" stroke-width="1.5"/>';}
+  var l=pt(-50,70),r=pt(50,70);
+  s+='<text x="'+l[0]+'" y="'+(l[1]+4)+'" font-size="12" fill="var(--muted)" text-anchor="middle">Flat</text><text x="'+r[0]+'" y="'+(r[1]+4)+'" font-size="12" fill="var(--muted)" text-anchor="middle">Sharp</text>';
+  s+='<g class="needle" id="needle"><line x1="170" y1="150" x2="170" y2="40" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/></g><circle cx="170" cy="150" r="7" fill="var(--brass)"/>';
+  return s+'</svg>';
+}
+function renderTuner(){
+  var v=$("v-tuner"),h='<div class="head"><div class="eyebrow"><span>Standard pitch, A = 440</span></div><h1 class="dtitle">Tuner</h1></div>';
+  if(MIC_OK){
+    h+='<div class="seg" role="group" aria-label="Tuner mode"><button type="button" id="m-mic" aria-pressed="'+(tuner.mode==="mic")+'">Microphone</button><button type="button" id="m-ref" aria-pressed="'+(tuner.mode==="ref")+'">Reference tones</button></div>';
+  }
+  if(tuner.mode==="mic"){
+    h+='<div class="readout"><div class="big" id="r-note">'+(tuner.on?"·":"")+'</div><div class="sub" id="r-sub">'+(tuner.on?"Pluck one string and let it ring.":"Tap Start, then pluck a string.")+'</div>'+gaugeSVG()+'<div class="st" id="r-st"></div>';
+    h+='<button type="button" class="primary" id="micbtn" style="width:100%">'+(tuner.on?"Stop tuner":"Start tuner")+'</button>';
+    if(tuner.err)h+='<p class="err">'+esc(tuner.err)+'</p>';
+    h+='</div>';
+    h+='<div class="tool-row"><span class="count" id="tcount"></span><button type="button" class="textbtn" id="treset">Reset checklist</button></div>';
+  }else{
+    h+='<div class="tool-row"><button type="button" class="switch" id="holdbtn" aria-pressed="'+tuner.hold+'"><i></i>Hold tone</button><span class="count">Tap a string to hear it</span></div>';
+  }
+  h+='<div class="sgrid" id="sgrid"></div>';
+  h+='<figure class="str" id="tfig"></figure>';
+  if(tuner.mode==="mic"){
+    h+='<ol class="howto"><li>Pluck <b>one string</b> at a time and let it ring.</li><li>The tuner follows the nearest string. If a string is far off, <b>tap it below</b> so the tuner locks onto it; tap again to unlock.</li><li><b>Tighten</b> the pin to raise the pitch, <b>loosen</b> it to lower. Small turns.</li><li>A green dot means the string held in tune for a moment.</li></ol>';
+  }else{
+    h+='<ol class="howto"><li>Tap a string to hear its target note, then pluck your own string.</li><li>If the two sounds <b>wobble</b> against each other, you are close. Turn the pin slowly until the wobble stops.</li><li><b>Tightening raises</b> the pitch. Turn Hold tone on to keep a note sounding while you tune with both hands.</li></ol>';
+    if(HAS_CLAUDE)h+='<p class="goal">A needle tuner that listens through your microphone is in the installed Android version.</p>';
+  }
+  v.innerHTML=h;
+  if(MIC_OK){
+    $("m-mic").onclick=function(){if(tuner.mode!=="mic"){holdStop();tuner.playing=0;tuner.mode="mic";renderTuner();}};
+    $("m-ref").onclick=function(){if(tuner.mode!=="ref"){micStop();tuner.mode="ref";tuner.sel=0;renderTuner();}};
+  }
+  if(tuner.mode==="mic"){
+    $("micbtn").onclick=function(){if(tuner.on){micStop();renderTuner();}else micStart();};
+    $("treset").onclick=function(){tuner.tuned={};drawStrings();};
+  }else{
+    $("holdbtn").onclick=function(){tuner.hold=!tuner.hold;if(!tuner.hold){holdStop();tuner.playing=0;}this.setAttribute("aria-pressed",String(tuner.hold));drawStrings();};
+  }
+  drawStrings();
+}
+function drawStrings(){
+  var g=$("sgrid");if(!g)return;var h="";
+  for(var i=1;i<=16;i++){
+    var cl="sbtn"+(tuner.sel===i?" sel":"")+(tuner.playing===i?" playing":"")+(tuner.mode==="mic"&&tuner.tuned[i]?" tuned":"");
+    var lab="String "+i+", "+STR[i-1][0]+(tuner.mode==="mic"?(tuner.sel===i?", locked":"")+(tuner.tuned[i]?", in tune":""):"");
+    h+='<button type="button" class="'+cl+'" data-s="'+i+'" aria-label="'+lab+'"'+(tuner.mode==="mic"?' aria-pressed="'+(tuner.sel===i)+'"':'')+'><span class="sn">'+i+'</span><span class="nn">'+STR[i-1][0]+'</span></button>';
+  }
+  g.innerHTML=h;
+  var fig=$("tfig");
+  if(fig)fig.innerHTML=stringsSVG({sel:tuner.mode==="mic"?tuner.sel:0,active:tuner.playing,tuned:tuner.mode==="mic"?tuner.tuned:{},label:"String status"});
+  var tc=$("tcount");if(tc){var n=Object.keys(tuner.tuned).length;tc.textContent=n+" of 16 strings in tune";}
+}
+function onStringTap(i){
+  if(tuner.mode==="mic"){tuner.sel=(tuner.sel===i?0:i);tuner.hist=[];drawStrings();return;}
+  if(tuner.hold){
+    if(tuner.playing===i){holdStop();tuner.playing=0;}else{holdStart(i);tuner.playing=i;}
+    drawStrings();return;
+  }
+  pluck(STR[i-1][1]);tuner.playing=i;drawStrings();
+  var me=i;setTimeout(function(){if(tuner.playing===me&&!tuner.hold){tuner.playing=0;drawStrings();}},900);
+}
+function micStart(){
+  tuner.err="";
+  var ctx=audio();if(!ctx){tuner.err="This browser can't process audio.";renderTuner();return;}
+  navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}}).then(function(stream){
+    var src=ctx.createMediaStreamSource(stream),an=ctx.createAnalyser();an.fftSize=4096;src.connect(an);
+    tuner.stream=stream;tuner.an=an;tuner.src=src;tuner.buf=new Float32Array(an.fftSize);tuner.on=true;tuner.hist=[];
+    try{if(navigator.wakeLock)navigator.wakeLock.request("screen").then(function(l){tuner.wake=l;},function(){});}catch(e){}
+    renderTuner();tuner.raf=requestAnimationFrame(micLoop);
+  },function(e){
+    tuner.err=(e&&e.name==="NotAllowedError")?"Microphone access was refused. Allow it for this app in Chrome's site settings, then tap Start again.":"The microphone couldn't start. Check that no other app is using it, then try again.";
+    renderTuner();
+  });
+}
+function micStop(){
+  if(tuner.raf)cancelAnimationFrame(tuner.raf);tuner.raf=0;
+  if(tuner.stream){tuner.stream.getTracks().forEach(function(t){t.stop();});}
+  try{if(tuner.src)tuner.src.disconnect();}catch(e){}
+  tuner.stream=null;tuner.an=null;tuner.src=null;tuner.on=false;
+  try{if(tuner.wake)tuner.wake.release();}catch(e){}tuner.wake=null;
+}
+function tunerLeave(){micStop();holdStop();tuner.playing=0;}
+function median(a){var b=a.slice().sort(function(x,y){return x-y;});return b[b.length>>1];}
+function micLoop(ts){
+  tuner.raf=requestAnimationFrame(micLoop);
+  if(ts-tuner.last<40)return;tuner.last=ts;
+  var an=tuner.an;if(!an)return;
+  an.getFloatTimeDomainData(tuner.buf);
+  var rms=0;for(var i=0;i<tuner.buf.length;i++)rms+=tuner.buf[i]*tuner.buf[i];rms=Math.sqrt(rms/tuner.buf.length);
+  if(rms<0.006){tuner.inSince=0;quiet();return;}
+  var r=yin(tuner.buf,AC.sampleRate);
+  if(!r||r.clarity<0.8||r.freq<150||r.freq>1100)return;
+  if(tuner.hist.length&&Math.abs(centsOf(r.freq,median(tuner.hist)))>80)tuner.hist=[];
+  tuner.hist.push(r.freq);if(tuner.hist.length>5)tuner.hist.shift();
+  showPitch(median(tuner.hist));
+}
+var quietTimer=0;
+function quiet(){
+  if(quietTimer)return;
+  quietTimer=setTimeout(function(){quietTimer=0;var st=$("r-st");if(st&&tuner.on&&tuner.an){var a=tuner.buf,rms=0;for(var i=0;i<a.length;i++)rms+=a[i]*a[i];if(Math.sqrt(rms/a.length)<0.006){st.textContent="";st.className="st";}}},900);
+}
+function showPitch(f){
+  var target=tuner.sel,best=1e9;
+  if(!target){for(var i=1;i<=16;i++){var c=Math.abs(centsOf(f,STR[i-1][1]));if(c<best){best=c;target=i;}}}
+  var cents=centsOf(f,STR[target-1][1]);
+  var note=$("r-note"),sub=$("r-sub"),st=$("r-st"),nd=$("needle");if(!note)return;
+  var far=!tuner.sel&&Math.abs(cents)>100;
+  note.textContent=far?chromName(f):STR[target-1][0];
+  sub.textContent=far?(f.toFixed(1)+" Hz, not near a lyre string. Tap the string you are tuning."):("String "+target+" · "+f.toFixed(1)+" Hz · "+(cents>=0?"+":"−")+Math.abs(cents).toFixed(0)+" cents");
+  var clamp=Math.max(-50,Math.min(50,cents));
+  if(nd)nd.style.transform="rotate("+((clamp/50)*60).toFixed(1)+"deg)";
+  if(far){st.textContent="";st.className="st";return;}
+  if(Math.abs(cents)<=5){
+    st.textContent="In tune";st.className="st ok";
+    var now=performance.now();
+    if(tuner.inTarget!==target){tuner.inTarget=target;tuner.inSince=now;}
+    else if(now-tuner.inSince>700&&!tuner.tuned[target]){tuner.tuned[target]=true;drawStrings();}
+  }else{
+    tuner.inSince=0;tuner.inTarget=0;
+    st.textContent=cents<0?"Flat: tighten a little":"Sharp: loosen a little";st.className="st off";
+  }
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click",function(e){
+  var t=e.target.closest?e.target.closest("[data-go],[data-tab],[data-s]"):null;if(!t)return;
+  if(t.hasAttribute("data-s")){onStringTap(+t.getAttribute("data-s"));return;}
+  if(t.hasAttribute("data-tab")){setTab(t.getAttribute("data-tab"));return;}
+  if(t.hasAttribute("data-go")&&!t.disabled){go(+t.getAttribute("data-go"));}
+});
+document.addEventListener("visibilitychange",function(){if(document.hidden){tunerLeave();if(state.tab==="tuner")renderTuner();}});
+
+/* ---------- boot ---------- */
+function parseHash(){
+  var h=(location.hash||"").replace(/^#/,"");
+  var m=/^w(\d{1,2})d(\d)$/.exec(h);
+  if(m){var w=+m[1],d=+m[2];if(w>=1&&w<=12&&d>=1&&d<=7){state.view=idx(w,d);state.userNav=true;return "session";}}
+  if(h==="tuner"||h==="plan"||h==="lyre")return h;
+  return null;
+}
+function start(data){
+  loadLocal();
+  state.view=nextIndex();
+  var tab=parseHash()||"session";
+  if(data&&typeof data.view==="number"){state.view=data.view;state.userNav=true;if(data.tab)tab=data.tab;}
+  renderChrome();setTab(tab,false);
+  initSync();
+}
+var hot=window.claude&&window.claude.hot;
+try{if(hot&&hot.snapshot)hot.snapshot(function(){return {view:state.view,tab:state.tab};});}catch(e){}
+if(hot&&hot.ready)hot.ready(start);else start((hot&&hot.data)||{});
+})();
+</script>
+
+<script>
+if("serviceWorker" in navigator){addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}
+</script>
+</body>
+</html>
